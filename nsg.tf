@@ -1,77 +1,91 @@
-resource "oci_core_network_security_group" "simple_nsg" {
-  #Required
-  compartment_id = var.network_compartment_ocid
-  vcn_id         = local.use_existing_network ? var.vcn_id : oci_core_vcn.simple.0.id
-
-  #Optional
-  display_name = var.nsg_display_name
-
-  freeform_tags = map(var.tag_key_name, var.tag_value)
+resource "oci_core_network_security_group" "ATP_nsg" {
+    compartment_id = var.compartment_ocid
+    display_name   = "ATP_nsg"
+    vcn_id         = oci_core_virtual_network.vcn.id
 }
 
-# Allow Egress traffic to all networks
-resource "oci_core_network_security_group_security_rule" "simple_rule_egress" {
-  network_security_group_id = oci_core_network_security_group.simple_nsg.id
-
-  direction   = "EGRESS"
-  protocol    = "all"
-  destination = "0.0.0.0/0"
-
+resource "oci_core_network_security_group" "web_nsg" {
+    compartment_id = var.compartment_ocid
+    display_name   = "web_nsg"
+    vcn_id         = oci_core_virtual_network.vcn.id
 }
 
-# Allow SSH (TCP port 22) Ingress traffic from any network
-resource "oci_core_network_security_group_security_rule" "simple_rule_ssh_ingress" {
-  network_security_group_id = oci_core_network_security_group.simple_nsg.id
-  protocol                  = "6"
-  direction                 = "INGRESS"
-  source                    = var.nsg_source_cidr
-  stateless                 = false
+resource "oci_core_network_security_group" "ssh_nsg" {
+    compartment_id = var.compartment_ocid
+    display_name   = "ssh_nsg"
+    vcn_id         = oci_core_virtual_network.vcn.id
+}
 
-  tcp_options {
-    destination_port_range {
-      min = var.nsg_ssh_port
-      max = var.nsg_ssh_port
+resource "oci_core_network_security_group_security_rule" "ATP_nsg_eagress_rule1" {
+    network_security_group_id = oci_core_network_security_group.ATP_nsg.id
+    direction = "EGRESS"
+    protocol = "6"
+    destination = var.VCN-CIDR
+    destination_type = "CIDR_BLOCK"
+}
+
+resource "oci_core_network_security_group_security_rule" "ATP_nsg_ingress_rule1" {
+    network_security_group_id = oci_core_network_security_group.ATP_nsg.id
+    direction = "INGRESS"
+    protocol = "6"
+    source = var.VCN-CIDR
+    source_type = "CIDR_BLOCK"
+    tcp_options {
+        destination_port_range {
+            max = 1522
+            min = 1522
+        }
     }
-  }
 }
 
-# Allow HTTPS (TCP port 443) Ingress traffic from any network
-resource "oci_core_network_security_group_security_rule" "simple_rule_https_ingress" {
-  network_security_group_id = oci_core_network_security_group.simple_nsg.id
-  protocol                  = "6"
-  direction                 = "INGRESS"
-  source                    = var.nsg_source_cidr
-  stateless                 = false
+resource "oci_core_network_security_group_security_rule" "web_nsg_egress_rule1" {
+    network_security_group_id = oci_core_network_security_group.web_nsg.id
+    direction = "EGRESS"
+    protocol = "6"
+    destination = oci_core_network_security_group.ATP_nsg.id
+    destination_type = "NETWORK_SECURITY_GROUP"
+}
 
-  tcp_options {
-    destination_port_range {
-      min = var.nsg_https_port
-      max = var.nsg_https_port
+resource "oci_core_network_security_group_security_rule" "web_nsg_egress_rule2" {
+    network_security_group_id = oci_core_network_security_group.web_nsg.id
+    direction = "EGRESS"
+    protocol = "6"
+    destination = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+}
+
+resource "oci_core_network_security_group_security_rule" "web_nsg_ingress_rule1" {
+    network_security_group_id = oci_core_network_security_group.web_nsg.id
+    direction = "INGRESS"
+    protocol = "6"
+    source = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    tcp_options {
+        destination_port_range {
+            max = 80
+            min = 80
+        }
     }
-  }
 }
 
-# Allow HTTP (TCP port 80) Ingress traffic from any network
-resource "oci_core_network_security_group_security_rule" "simple_rule_http_ingress" {
-  network_security_group_id = oci_core_network_security_group.simple_nsg.id
-  protocol                  = "6"
-  direction                 = "INGRESS"
-  source                    = var.nsg_source_cidr
-  stateless                 = false
+resource "oci_core_network_security_group_security_rule" "ssh_nsg_egress_rule1" {
+    network_security_group_id = oci_core_network_security_group.ssh_nsg.id
+    direction = "EGRESS"
+    protocol = "6"
+    destination = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+}
 
-  tcp_options {
-    destination_port_range {
-      min = var.nsg_http_port
-      max = var.nsg_http_port
+resource "oci_core_network_security_group_security_rule" "ssh_nsg_ingress_rule1" {
+    network_security_group_id = oci_core_network_security_group.ssh_nsg.id
+    direction = "INGRESS"
+    protocol = "6"
+    source = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    tcp_options {
+        destination_port_range {
+            max = 22
+            min = 22
+        }
     }
-  }
-}
-
-# Allow ANY Ingress traffic from within simple vcn
-resource "oci_core_network_security_group_security_rule" "simple_rule_all_simple_vcn_ingress" {
-  network_security_group_id = oci_core_network_security_group.simple_nsg.id
-  protocol                  = "all"
-  direction                 = "INGRESS"
-  source                    = var.vcn_cidr_block
-  stateless                 = false
 }

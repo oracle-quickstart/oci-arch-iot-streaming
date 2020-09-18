@@ -1,218 +1,108 @@
-#Variables declared in this file must be declared in the marketplace.yaml
-#Provide a description to your variables.
+variable "tenancy_ocid" {}
+variable "user_ocid" {}
+variable "fingerprint" {}
+variable "private_key_path" {}
+variable "compartment_ocid" {}
+variable "region" {}
+variable "atp_password" {}
+variable "atp_admin_password" {}
+variable "private_key_oci" {}
+variable "public_key_oci" {}
 
-############################
-#  Hidden Variable Group   #
-############################
-variable "tenancy_ocid" {
+variable "OsImage" {
+  default = "Oracle-Linux-7.8-2020.05.26-0"
 }
 
-variable "region" {
+variable "atp_admin_user" {
+ default = "admin"
 }
 
-###############################################################################
-#  Marketplace Image Listing - information available in the Partner portal    #
-###############################################################################
-variable "mp_subscription_enabled" {
-  description = "Subscribe to Marketplace listing?"
-  type        = bool
-  default     = false
+variable "atp_user" {
+ default = "fkuser"
 }
 
-variable "mp_listing_id" {
-  // default = "ocid1.appcataloglisting.oc1.."
-  default     = ""
-  description = "Marketplace Listing OCID"
+variable "VCN-CIDR" {
+  default = "10.0.0.0/16"
 }
 
-variable "mp_listing_resource_id" {
-  // default = "ocid1.image.oc1.."
-  default     = ""
-  description = "Marketplace Listing Image OCID"
+variable "websubnet-CIDR" {
+  default = "10.0.1.0/24"
 }
 
-variable "mp_listing_resource_version" {
-  // default = "1.0"
-  default     = ""
-  description = "Marketplace Listing Package/Resource Version"
+variable "ATPsubnet-CIDR" {
+  default = "10.0.2.0/24"
 }
 
-############################
-#  Custom Image           #
-############################
-variable "custom_image_id" {
-  default     = "ocid1.image.oc1...."
-  description = "Custom Image OCID"
+variable "VCNname" {
+  default = "VCN"
 }
 
-############################
-#  Compute Configuration   #
-############################
-
-variable "vm_display_name" {
-  description = "Instance Name"
-  default     = "simple-vm"
+variable "httpx_ports" {
+  default = ["80", "443"]
 }
 
-variable "vm_compute_shape" {
-  description = "Compute Shape"
-  default     = "VM.Standard2.2" //2 cores
+variable "Shapes" {
+ default = ["VM.Standard2.1"]
 }
 
-# only used for E3 Flex shape
-variable "vm_flex_shape_ocpus" {
-  description = "Flex Shape OCPUs"
-  default = 1 
+variable "ATP_database_cpu_core_count" {
+  default = 1
 }
 
-variable "availability_domain_name" {
-  default     = ""
-  description = "Availability Domain"
+variable "ATP_database_data_storage_size_in_tbs" {
+  default = 1
 }
 
-variable "availability_domain_number" {
-  default     = 1
-  description = "OCI Availability Domains: 1,2,3  (subject to region availability)"
+variable "ATP_database_db_name" {
+  default = "fkatpdb5"
 }
 
-variable "ssh_public_key" {
-  description = "SSH Public Key"
+variable "ATP_database_db_version" {
+  default = "18c"
 }
 
-variable "hostname_label" {
-  default     = "simple"
-  description = "DNS Hostname Label. Must be unique across all VNICs in the subnet and comply with RFC 952 and RFC 1123."
+variable "ATP_database_defined_tags_value" {
+  default = "value"
 }
 
-############################
-#  Network Configuration   #
-############################
-
-variable "network_strategy" {
-  #default = "Use Existing VCN and Subnet"
-  default = "Create New VCN and Subnet"
+variable "ATP_database_display_name" {
+  default = "ATP"
 }
 
-variable "vcn_id" {
+variable "ATP_database_freeform_tags" {
+  default = {
+    "Owner" = ""
+  }
+}
+
+variable "ATP_database_license_model" {
+  default = "LICENSE_INCLUDED"
+}
+
+variable "ATP_tde_wallet_zip_file" {
+  default = "tde_wallet.zip"
+}
+
+variable "ATP_database_atp_private_endpoint_label" {
+  default = "ATPPrivateEndpoint"
+}
+
+variable "ocir_namespace" {
   default = ""
 }
 
-variable "vcn_display_name" {
-  description = "VCN Name"
-  default     = "simple-vcn"
-}
-
-variable "vcn_cidr_block" {
-  description = "VCN CIDR"
-  default     = "10.0.0.0/16"
-}
-
-variable "vcn_dns_label" {
-  description = "VCN DNS Label"
-  default     = "simplevcn"
-}
-
-variable "subnet_type" {
-  description = "Choose between private and public subnets"
-  default     = "Public Subnet"
-  #or  
-  #default     = "Private Subnet"
-}
-
-variable "subnet_id" {
+variable "ocir_repo_name" {
   default = ""
 }
 
-variable "subnet_display_name" {
-  description = "Subnet Name"
-  default     = "simple-subnet"
+variable "ocir_docker_repository" {
+  default = ""
 }
 
-variable "subnet_cidr_block" {
-  description = "Subnet CIDR"
-  default     = "10.0.0.0/24"
+variable "ocir_user_name" {
+  default = ""
 }
 
-variable "subnet_dns_label" {
-  description = "Subnet DNS Label"
-  default     = "simplesubnet"
-}
-
-############################
-# Security Configuration #
-############################
-variable "nsg_display_name" {
-  description = "Network Security Group Name"
-  default     = "simple-network-security-group"
-}
-
-variable "nsg_source_cidr" {
-  description = "Allowed Ingress Traffic (CIDR Block)"
-  default     = "0.0.0.0/0"
-}
-
-variable "nsg_ssh_port" {
-  description = "SSH Port"
-  default     = 22
-}
-
-variable "nsg_https_port" {
-  description = "HTTPS Port"
-  default     = 443
-}
-
-variable "nsg_http_port" {
-  description = "HTTP Port"
-  default     = 80
-}
-
-############################
-# Additional Configuration #
-############################
-
-variable "compute_compartment_ocid" {
-  description = "Compartment where Compute and Marketplace subscription resources will be created"
-}
-
-variable "network_compartment_ocid" {
-  description = "Compartment where Network resources will be created"
-}
-
-variable "tag_key_name" {
-  description = "Free-form tag key name"
-  default     = "oracle-quickstart"
-}
-
-variable "tag_value" {
-  description = "Free-form tag value"
-  default     = "oci-quickstart-template"
-}
-
-
-######################
-#    Enum Values     #
-######################
-variable "network_strategy_enum" {
-  type = map
-  default = {
-    CREATE_NEW_VCN_SUBNET   = "Create New VCN and Subnet"
-    USE_EXISTING_VCN_SUBNET = "Use Existing VCN and Subnet"
-  }
-}
-
-variable "subnet_type_enum" {
-  type = map
-  default = {
-    PRIVATE_SUBNET = "Private Subnet"
-    PUBLIC_SUBNET  = "Public Subnet"
-  }
-}
-
-variable "nsg_config_enum" {
-  type = map
-  default = {
-    BLOCK_ALL_PORTS = "Block all ports"
-    OPEN_ALL_PORTS  = "Open all ports"
-    CUSTOMIZE       = "Customize ports - Post deployment"
-  }
+variable "ocir_user_password" {
+  default = ""
 }

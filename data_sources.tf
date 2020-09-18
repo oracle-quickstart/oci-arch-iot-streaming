@@ -1,26 +1,31 @@
-data "oci_identity_availability_domain" "ad" {
-  compartment_id = var.tenancy_ocid
-  ad_number      = var.availability_domain_number
+data "oci_core_vnic_attachments" "webserver_VNIC1_attach" {
+  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[0], "name")
+  compartment_id      = var.compartment_ocid
+  instance_id         = oci_core_instance.webserver.id
 }
 
-data "oci_core_images" "autonomous_ol7" {
-  compartment_id   = var.compute_compartment_ocid
-  operating_system = "Oracle Autonomous Linux"
-  sort_by          = "TIMECREATED"
-  sort_order       = "DESC"
-  state            = "AVAILABLE"
+data "oci_core_vnic" "webserver_VNIC1" {
+  vnic_id = data.oci_core_vnic_attachments.webserver_VNIC1_attach.vnic_attachments.0.vnic_id
+}
 
-  # filter restricts to pegged version regardless of region
-  filter {
-    name   = "display_name"
-    values = ["Oracle-Autonomous-Linux-7.8-2020.04-0"]
-    regex  = false
-  }
+data "oci_identity_availability_domains" "ADs" {
+  compartment_id = var.tenancy_ocid
+}
 
-  # filter restricts to OL 7
-  filter {
-    name   = "operating_system_version"
-    values = ["7\\.[0-9]"]
-    regex  = true
-  }
+data "oci_core_images" "OSImageLocal" {
+  compartment_id = var.compartment_ocid
+  display_name   = var.OsImage
+}
+
+data "oci_apigateway_deployment" "apigateway_deployment" {
+    deployment_id = oci_apigateway_deployment.apigateway_deployment.id
+}
+
+data "oci_streaming_stream_pool" "streamPool" {
+    stream_pool_id = oci_streaming_stream_pool.streamPool.id
+}
+
+data "oci_database_autonomous_databases" "ATPdatabases" {
+  compartment_id = var.compartment_ocid
+  display_name = var.ATP_database_display_name
 }

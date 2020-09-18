@@ -1,37 +1,18 @@
-resource "oci_core_instance" "simple-vm" {
-  availability_domain = local.availability_domain
-  compartment_id      = var.compute_compartment_ocid
-  display_name        = var.vm_display_name
-  shape               = var.vm_compute_shape
-
-  dynamic "shape_config" {
-    for_each = local.is_flex_shape
-      content {
-        ocpus = shape_config.value
-      }
-  }
-  
-
-  create_vnic_details {
-    subnet_id              = local.use_existing_network ? var.subnet_id : oci_core_subnet.simple_subnet[0].id
-    display_name           = var.subnet_display_name
-    assign_public_ip       = local.is_public_subnet
-    hostname_label         = var.hostname_label
-    skip_source_dest_check = false
-    nsg_ids                = [oci_core_network_security_group.simple_nsg.id]
-  }
-
+resource "oci_core_instance" "webserver" {
+  availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[0], "name")
+  compartment_id      = var.compartment_ocid
+  display_name        = "webserver"
+  shape               = var.Shapes[0]
+  subnet_id           = oci_core_subnet.websubnet.id
   source_details {
     source_type = "image"
-    source_id   = local.platform_image_id
-    #use a marketplace image or custom image:
-    #source_id   = local.compute_image_id
+    source_id   = lookup(data.oci_core_images.OSImageLocal.images[0], "id")
   }
-
   metadata = {
-    ssh_authorized_keys = var.ssh_public_key
-    user_data           = base64encode(file("./scripts/example.sh"))
+    ssh_authorized_keys = file(var.public_key_oci)
   }
-
-  freeform_tags = map(var.tag_key_name, var.tag_value)
+  create_vnic_details {
+    subnet_id = oci_core_subnet.websubnet.id
+    nsg_ids   = [oci_core_network_security_group.websecuritygroup.id, oci_core_network_security_group.sshsecuritygroup.id]
+  }
 }

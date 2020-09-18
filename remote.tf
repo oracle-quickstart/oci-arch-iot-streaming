@@ -6,7 +6,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = var.private_key_oci
+      private_key = file(var.private_key_oci)
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -33,7 +33,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = var.private_key_oci
+      private_key = file(var.private_key_oci)
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -47,7 +47,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = var.private_key_oci
+      private_key = file(var.private_key_oci)
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -61,7 +61,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = var.private_key_oci
+      private_key = file(var.private_key_oci)
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -75,7 +75,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = var.private_key_oci
+      private_key = file(var.private_key_oci)
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -89,7 +89,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = var.private_key_oci
+      private_key = file(var.private_key_oci)
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -111,7 +111,7 @@ resource "null_resource" "webserver_Flask_WebServer_and_access_ATP" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = var.private_key_oci
+      private_key = file(var.private_key_oci)
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"

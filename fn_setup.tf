@@ -1,43 +1,5 @@
-resource "null_resource" "SetupDockerEngineAndFnProject" {
-
-  provisioner "local-exec" {
-    command = "sudo -u root yum -y update"
-  }
-  
-  provisioner "local-exec" {
-    command = "sudo -u root yum -y install yum-utils"
-  }    
-
-  provisioner "local-exec" {
-    command = "sudo -u root yum-config-manager --enable *addons"
-  } 
-
-  provisioner "local-exec" {
-    command = "sudo -u root yum -y install docker-engine"
-  } 
-
-  provisioner "local-exec" {
-    command = "sudo -u root groupadd docker"
-  } 
-
-  provisioner "local-exec" {
-    command = "sudo -u root service docker restart"
-  } 
-
-  provisioner "local-exec" {
-    command = "sudo -u root usermod -a -G docker opc"
-  } 
-
-  provisioner "local-exec" {
-    command = "curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh"
-  } 
-
-}
-
-
 resource "null_resource" "Login2OCIR" {
-  depends_on = [null_resource.SetupDockerEngineAndFnProject,
-                local_file.ATP_database_wallet_file, 
+  depends_on = [local_file.ATP_database_wallet_file, 
                 oci_functions_application.Stream2ATPFnApp, 
                 oci_database_autonomous_database.ATPdatabase,
                 oci_identity_policy.FunctionsServiceReposAccessPolicy,

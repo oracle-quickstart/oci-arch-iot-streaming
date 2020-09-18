@@ -1,6 +1,43 @@
+resource "null_resource" "SetupDockerEngineAndFnProject" {
+
+  provisioner "local-exec" {
+    command = "sudo -u root yum -y update"
+  }
+  
+  provisioner "local-exec" {
+    command = "sudo -u root yum -y install yum-utils"
+  }    
+
+  provisioner "local-exec" {
+    command = "sudo -u root yum-config-manager --enable *addons"
+  } 
+
+  provisioner "local-exec" {
+    command = "sudo -u root yum -y install docker-engine"
+  } 
+
+  provisioner "local-exec" {
+    command = "sudo -u root groupadd docker"
+  } 
+
+  provisioner "local-exec" {
+    command = "sudo -u root service docker restart"
+  } 
+
+  provisioner "local-exec" {
+    command = "sudo -u root usermod -a -G docker opc"
+  } 
+
+  provisioner "local-exec" {
+    command = "curl -LSs https://raw.githubusercontent.com/fnproject/cli/master/install | sh"
+  } 
+
+}
+
 
 resource "null_resource" "Login2OCIR" {
-  depends_on = [local_file._ATP_database_wallet_file, 
+  depends_on = [null_resource.SetupDockerEngineAndFnProject,
+                local_file.ATP_database_wallet_file, 
                 oci_functions_application.Stream2ATPFnApp, 
                 oci_database_autonomous_database.ATPdatabase,
                 oci_identity_policy.FunctionsServiceReposAccessPolicy,
@@ -18,7 +55,7 @@ resource "null_resource" "Login2OCIR" {
 }
 
 resource "null_resource" "SetupATPFnPush2OCIR" {
-  depends_on = [null_resource.Login2OCIR, local_file._ATP_database_wallet_file, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase]
+  depends_on = [null_resource.Login2OCIR, local_file.ATP_database_wallet_file, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase]
 
   provisioner "local-exec" {
     command = "cp ${var.ATP_tde_wallet_zip_file} functions/SetupATPFn/" 
@@ -48,7 +85,7 @@ resource "null_resource" "SetupATPFnPush2OCIR" {
 
 
 resource "null_resource" "Stream2ATPFnPush2OCIR" {
-  depends_on = [null_resource.Login2OCIR, local_file.ATP_database_wallet_file, oci_streaming_stream.Stream, oci_streaming_stream_pool.StreamPool, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase, null_resource.SetupATPFnPush2OCIR]
+  depends_on = [null_resource.Login2OCIR, local_file.ATP_database_wallet_file, oci_streaming_stream.stream, oci_streaming_stream_pool.streamPool, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase, null_resource.SetupATPFnPush2OCIR]
 
 
   provisioner "local-exec" {
@@ -61,7 +98,7 @@ resource "null_resource" "Stream2ATPFnPush2OCIR" {
   }
   
   provisioner "local-exec" {
-    command = "fn build --verbose --build-arg ARG_ATP_USER=${var.atp_user} --build-arg ARG_ATP_PASSWORD=${var.atp_password} --build-arg ARG_ATP_ALIAS=${var.ATP_database_db_name}_medium --build-arg ARG_STREAM_OCID=${oci_streaming_stream.Stream.id} --build-arg ARG_STREAM_ENDPOINT=${data.oci_streaming_stream_pool.StreamPool.endpoint_fqdn}"
+    command = "fn build --verbose --build-arg ARG_ATP_USER=${var.atp_user} --build-arg ARG_ATP_PASSWORD=${var.atp_password} --build-arg ARG_ATP_ALIAS=${var.ATP_database_db_name}_medium --build-arg ARG_STREAM_OCID=${oci_streaming_stream.stream.id} --build-arg ARG_STREAM_ENDPOINT=${data.oci_streaming_stream_pool.streamPool.endpoint_fqdn}"
     working_dir = "functions/Stream2ATPFn"
   }
 
@@ -79,7 +116,7 @@ resource "null_resource" "Stream2ATPFnPush2OCIR" {
 
 
 resource "null_resource" "Upload2StreamFnPush2OCIR" {
-  depends_on = [null_resource.Login2OCIR, oci_streaming_stream.Stream, oci_streaming_stream_pool.StreamPool, oci_functions_application.Upload2StreamFnApp]
+  depends_on = [null_resource.Login2OCIR, oci_streaming_stream.stream, oci_streaming_stream_pool.streamPool, oci_functions_application.Upload2StreamFnApp]
 
   provisioner "local-exec" {
     command = "image=$(docker images | grep upload2streamfn | awk -F ' ' '{print $3}') ; docker rmi -f $image &> /dev/null ; echo $image"
@@ -87,17 +124,17 @@ resource "null_resource" "Upload2StreamFnPush2OCIR" {
   }
   
   provisioner "local-exec" {
-    command = "echo 'ARG_STREAM_OCID=${oci_streaming_stream.Stream.id}' "
+    command = "echo 'ARG_STREAM_OCID=${oci_streaming_stream.stream.id}' "
     
   }
 
   provisioner "local-exec" {
-    command = "echo 'ARG_STREAM_ENDPOINT=${data.oci_streaming_stream_pool.StreamPool.endpoint_fqdn}'"
+    command = "echo 'ARG_STREAM_ENDPOINT=${data.oci_streaming_stream_pool.streamPool.endpoint_fqdn}'"
     
   }
 
   provisioner "local-exec" {
-    command = "fn build --verbose --build-arg ARG_STREAM_OCID='${oci_streaming_stream.Stream.id}' --build-arg ARG_STREAM_ENDPOINT='${data.oci_streaming_stream_pool.StreamPool.endpoint_fqdn}'"
+    command = "fn build --verbose --build-arg ARG_STREAM_OCID='${oci_streaming_stream.stream.id}' --build-arg ARG_STREAM_ENDPOINT='${data.oci_streaming_stream_pool.streamPool.endpoint_fqdn}'"
     working_dir = "functions/Upload2StreamFn"
   }
 

@@ -9,10 +9,10 @@ resource "oci_core_instance" "webserver" {
     source_id   = lookup(data.oci_core_images.OSImageLocal.images[0], "id")
   }
   metadata = {
-    ssh_authorized_keys = file(var.public_key_oci)
+    ssh_authorized_keys = var.public_key_oci
   }
   create_vnic_details {
     subnet_id = oci_core_subnet.websubnet.id
-    nsg_ids   = [oci_core_network_security_group.websecuritygroup.id, oci_core_network_security_group.sshsecuritygroup.id]
+    nsg_ids   = [oci_core_network_security_group.web_nsg.id, oci_core_network_security_group.ssh_nsg.id]
   }
 }

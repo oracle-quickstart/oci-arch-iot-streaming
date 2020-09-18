@@ -34,8 +34,8 @@ fingerprint          = "<finger_print>"
 private_key_path     = "<pem_private_key_path>"
 
 # SSH Keys
-ssh_public_key  = "<public_ssh_key_path>"
-ssh_private_key  = "<private_ssh_key_path>"
+public_key_oci  = "<public_ssh_key_path>"
+private_key_oci  = "<private_ssh_key_path>"
 
 # Region
 region = "<oci_region>"
@@ -43,8 +43,10 @@ region = "<oci_region>"
 # Compartment
 compartment_ocid = "<compartment_ocid>"
 
-# ATP password
-ATP_password = "<ATP_password>"
+# ATP passwords
+atp_admin_password = "<ATP_admin_password>"
+atp_password = "<ATP_appuser_password>"
+
 ````
 
 Deploy:

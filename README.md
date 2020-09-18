@@ -64,4 +64,4 @@ When you no longer need the deployment, you can run this command to destroy it:
 
 ## Reference Archirecture
 
-- [Deploy Private Endpoints for Autonomous Database](https://docs.oracle.com/en/solutions/atp-private/index.html)
+- [IoT_at_scale_with_OCI_Streaming](https://docs.oracle.com/en/solutions/.../index.html)

@@ -11,10 +11,46 @@ resource "oci_core_internet_gateway" "igw" {
     vcn_id         = oci_core_virtual_network.vcn.id
 }
 
+/*
 resource "oci_core_nat_gateway" "natgw" {
     compartment_id = var.compartment_ocid
     display_name   = "natgw"
     vcn_id         = oci_core_virtual_network.vcn.id
+}
+*/
+
+resource "oci_core_route_table" "rt_transit_routing_sgw" {
+  compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_virtual_network.vcn.id
+  display_name   = "rt_transit_routing_sgw"
+}
+
+
+resource "oci_core_service_gateway" "sgw" {
+  #Required
+  compartment_id = var.compartment_ocid
+
+  services {
+    service_id = data.oci_core_services.oci_services.services[0]["id"]
+  }
+
+  vcn_id = oci_core_virtual_network.vcn.id
+
+  #Optional
+  display_name   = "ServiceGateway"
+  route_table_id = oci_core_route_table.rt_transit_routing_sgw.id
+}
+
+resource "oci_core_route_table" "rt_via_sgw" {
+  compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_virtual_network.vcn.id
+  display_name   = "rt_via_sgw"
+
+  route_rules {
+    destination       = data.oci_core_services.oci_services.services[0]["cidr_block"]
+    destination_type  = "SERVICE_CIDR_BLOCK"
+    network_entity_id = oci_core_service_gateway.sgw.id
+  }
 }
 
 resource "oci_core_route_table" "rt_via_igw" {
@@ -28,6 +64,7 @@ resource "oci_core_route_table" "rt_via_igw" {
     }
 }
 
+/*
 resource "oci_core_route_table" "rt_via_nat" {
     compartment_id = var.compartment_ocid
     vcn_id         = oci_core_virtual_network.vcn.id
@@ -38,6 +75,7 @@ resource "oci_core_route_table" "rt_via_nat" {
         network_entity_id = oci_core_nat_gateway.natgw.id
     }
 }
+*/
 
 resource "oci_core_security_list" "seclist1" {
     compartment_id = var.compartment_ocid

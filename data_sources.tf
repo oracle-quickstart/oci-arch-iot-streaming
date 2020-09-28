@@ -29,3 +29,17 @@ data "oci_database_autonomous_databases" "ATPdatabases" {
   compartment_id = var.compartment_ocid
   display_name = var.ATP_database_display_name
 }
+
+data "oci_core_services" "oci_services" {
+  filter {
+    name   = "name"
+    values = ["All .* Services In Oracle Services Network"]
+    regex  = true
+  }
+}
+
+data "oci_core_service_gateways" "sgws" {
+  compartment_id = var.compartment_ocid
+  state  = "AVAILABLE"
+  vcn_id = oci_core_virtual_network.vcn.id
+}

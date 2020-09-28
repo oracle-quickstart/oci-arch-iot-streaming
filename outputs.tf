@@ -5,3 +5,11 @@ output "Upload2StreamFn_POST_EndPoint_URL" {
 output "Flask_Webserver_URL" {
   value = [join("", ["http://", data.oci_core_vnic.webserver_VNIC1.public_ip_address, "/"])]
 }
+
+output "oci_services" {
+  value = [data.oci_core_services.oci_services.services]
+}
+
+output "service_gateways" {
+  value = [data.oci_core_service_gateways.sgws.service_gateways]
+}

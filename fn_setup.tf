@@ -1,3 +1,6 @@
+## Copyright (c) 2020, Oracle and/or its affiliates.
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 resource "null_resource" "Login2OCIR" {
   depends_on = [local_file.ATP_database_wallet_file, 
                 oci_functions_application.Stream2ATPFnApp, 

@@ -1,3 +1,6 @@
+## Copyright (c) 2020, Oracle and/or its affiliates.
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 resource "null_resource" "webserver_ConfigMgmt" {
   depends_on = [oci_core_instance.webserver, oci_database_autonomous_database.ATPdatabase, local_file.ATP_database_wallet_file]
 

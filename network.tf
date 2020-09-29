@@ -1,3 +1,6 @@
+## Copyright (c) 2020, Oracle and/or its affiliates.
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 resource "oci_core_virtual_network" "vcn" {
   cidr_block     = var.VCN-CIDR
   dns_label      = "vcn"
@@ -11,13 +14,6 @@ resource "oci_core_internet_gateway" "igw" {
     vcn_id         = oci_core_virtual_network.vcn.id
 }
 
-/*
-resource "oci_core_nat_gateway" "natgw" {
-    compartment_id = var.compartment_ocid
-    display_name   = "natgw"
-    vcn_id         = oci_core_virtual_network.vcn.id
-}
-*/
 
 resource "oci_core_route_table" "rt_transit_routing_sgw" {
   compartment_id = var.compartment_ocid
@@ -64,18 +60,6 @@ resource "oci_core_route_table" "rt_via_igw" {
     }
 }
 
-/*
-resource "oci_core_route_table" "rt_via_nat" {
-    compartment_id = var.compartment_ocid
-    vcn_id         = oci_core_virtual_network.vcn.id
-    display_name   = "rt_via_nat"
-    route_rules {
-        destination = "0.0.0.0/0"
-        destination_type  = "CIDR_BLOCK"
-        network_entity_id = oci_core_nat_gateway.natgw.id
-    }
-}
-*/
 
 resource "oci_core_security_list" "seclist1" {
     compartment_id = var.compartment_ocid

@@ -1,3 +1,6 @@
+## Copyright (c) 2020, Oracle and/or its affiliates.
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 resource "oci_functions_application" "Stream2ATPFnApp" {
     compartment_id = var.compartment_ocid
     display_name = "Stream2ATPFnApp"

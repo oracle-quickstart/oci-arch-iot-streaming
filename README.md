@@ -82,7 +82,7 @@ When you no longer need the deployment, you can run this command to destroy it:
 
     terraform destroy
 
-## ATP Private Endpoints Architecture
+## Architecture Topology Diagram
 
 ![](./images/oci-arch-iot-streaming.png)
 

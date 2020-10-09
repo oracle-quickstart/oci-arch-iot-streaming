@@ -88,4 +88,4 @@ When you no longer need the deployment, you can run this command to destroy it:
 
 ## Reference Archirecture
 
-- [IoT_at_scale_with_OCI_Streaming](https://docs.oracle.com/en/solutions/.../index.html)
+- [Stream IoT data to an autonomous database using serverless functions](https://docs.oracle.com/en/solutions/iot-streaming-oci)

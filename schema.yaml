@@ -132,10 +132,30 @@
 
       # Optional Configuration
       VCN-CIDR:
-         type: string
-         required: false
-         default: "10.0.0.0/16"
-         pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-         description: "VCN CIDR block where you want to create the solution resources."
+        type: string
+        required: false
+        default: "10.0.0.0/16"
+        pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+        description: "VCN CIDR block where you want to create the solution resources."
+
+      ATPsubnet-CIDR:
+        type: string
+        required: false
+        default: "10.0.2.0/24"
+        pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+        description: "Private subnet's CIDR block where you want to place your Private Endpoint for ATP."
+
+      websubnet-CIDR:
+        type: string
+        required: false
+        default: "10.0.1.0/24"
+        pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+        description: "Public subnet's CIDR block where you want to place your Flask-based Webserver VM."
+      
+      VCNname:
+        type: string
+        required: false
+        default: "VCN"
+        description: "Name for your VCN where want to create the solution resources."  
 
       

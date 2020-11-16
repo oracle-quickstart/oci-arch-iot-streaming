@@ -52,7 +52,7 @@
         required: true
         visibile: true
         title: "ATP Admin Database password"
-        description: "ATP Database password for ADMIN username"
+        description: "ATP Database password for ADMIN user"
 
       atp_user:
         type: string
@@ -62,12 +62,12 @@
         title: "ATP application username."
         description: "ATP application username."
 
-      atp_admin_password:
+      atp_password:
         type: password
         required: true
         visibile: true
-        title: "ATP Admin Database password"
-        description: "ATP Database password for ADMIN username"
+        title: "ATP App User Database password"
+        description: "ATP Database password for Application user"
 
 
       

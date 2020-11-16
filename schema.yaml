@@ -161,7 +161,7 @@
       httpx_ports:
         type: string
         required: false
-        default: "['80','443']"
+        default: "[80,443]"
         description: "HTTP and HTTPS ports."
 
       Shape:

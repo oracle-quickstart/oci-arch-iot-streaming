@@ -175,4 +175,46 @@
         required: false
         default: "Oracle-Linux-7.8-2020.05.26-0"
         description: "OEL image used for Flask-based Webserver VM."
+
+      ATP_database_cpu_core_count:
+        type: number
+        required: false
+        default: 1
+        description: "ATP Database CPU Core Count"
+
+      ATP_database_data_storage_size_in_tbs:
+        type: number
+        required: false
+        default: 1
+        description: "ATP Database Data Storage Size in terabytes"
+
+      ATP_database_db_name:
+        type: string
+        required: false
+        default: "atpdb1"
+        description: "ATP Database DBNAME"
+
+      ATP_database_db_version:
+        type: string
+        required: false
+        default: "19c"
+        description: "ATP Database Version"
+
+      ATP_database_display_name:
+        type: string
+        required: false
+        default: "ATPDB"
+        description: "ATP Database Display Name"
+
+      ATP_database_license_model:
+        type: string
+        required: false
+        default: "LICENSE_INCLUDED"
+        description: "ATP Database License Model"
+
+      ATP_tde_wallet_zip_file:
+        type: string
+        required: false
+        default: "tde_wallet_ATPdb1.zip"
+        description: "ATP Database TDE Wallet ZIP File"
       

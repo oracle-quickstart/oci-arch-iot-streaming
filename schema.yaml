@@ -217,4 +217,20 @@
         required: false
         default: "tde_wallet_ATPdb1.zip"
         description: "ATP Database TDE Wallet ZIP File"
+
+      ATP_database_atp_private_endpoint_label:
+        type: string
+        required: false
+        default: "ATPPrivateEndpoint"
+        description: "ATP Database Private Endpoint Label"
+
+      ATP_database_freeform_tags:
+        type: string
+        required: false
+        description: "ATP Database Freeform Tags"
+
+      ATP_database_defined_tags_value:
+        type: string
+        required: false
+        description: "ATP Database Defined Tags"
       

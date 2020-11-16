@@ -20,8 +20,6 @@
       - region
       - atp_admin_user
       - atp_admin_password
-      - atp_user
-      - atp_password
     
     variables:
 
@@ -54,18 +52,5 @@
         title: "ATP Admin Database password"
         description: "ATP Database password for ADMIN username"
 
-      atp_user:
-        type: string
-        required: true
-        visibile: true
-        title: "ATP application username."
-        description: "ATP application username."
-
-      atp_admin_password:
-        type: password
-        required: true
-        visibile: true
-        title: "ATP application user password"
-        description: "ATP application user password."
 
       

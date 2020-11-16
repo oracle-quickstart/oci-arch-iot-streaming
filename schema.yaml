@@ -24,6 +24,7 @@
       - atp_password
       - ocir_namespace
       - ocir_repo_name
+      - ocir_docker_repository
     
     variables:
 
@@ -85,6 +86,12 @@
         title: "Oracle Cloud Infrastructure Registry (OCIR) repository name"
         description: "Oracle Cloud Infrastructure Registry (OCIR) repository name"
 
-
+      ocir_docker_repository:
+        type: string
+        required: true
+        visibile: true
+        title: "Oracle Cloud Infrastructure Registry (OCIR) Docker Repository URL"
+        description: "Oracle Cloud Infrastructure Registry (OCIR) Docker Repository URL" 
+        
 
       

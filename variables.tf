@@ -46,6 +46,7 @@ variable "httpx_ports" {
 }
 
 variable "Shapes" {
+ type = list(string)
  default = ["VM.Standard2.1"]
 }
 

@@ -22,11 +22,6 @@
       - atp_admin_password
       - atp_user
       - atp_password
-      - ocir_namespace
-      - ocir_repo_name
-      - ocir_docker_repository
-      - ocir_user_name
-      - ocir_user_password
     
     variables:
 
@@ -63,7 +58,6 @@
         type: string
         required: true
         visibile: true
-        default: "oraapp"
         title: "ATP application username."
         description: "ATP application username."
 
@@ -74,39 +68,4 @@
         title: "ATP application user password"
         description: "ATP application user password."
 
-      ocir_namespace:
-        type: string
-        required: true
-        visibile: true
-        title: "Oracle Cloud Infrastructure Registry (OCIR) namespace"
-        description: "Oracle Cloud Infrastructure Registry (OCIR) namespace"
-
-      ocir_repo_name:
-        type: string
-        required: true
-        visibile: true
-        default: "functions"
-        title: "Oracle Cloud Infrastructure Registry (OCIR) repository name"
-        description: "Oracle Cloud Infrastructure Registry (OCIR) repository name"
-
-      ocir_docker_repository:
-        type: string
-        required: true
-        visibile: true
-        title: "Oracle Cloud Infrastructure Registry (OCIR) Docker Repository URL"
-        description: "Oracle Cloud Infrastructure Registry (OCIR) Docker Repository URL"      
-
-      ocir_user_name:
-        type: string
-        required: true
-        visibile: true
-        title: "Oracle Cloud Infrastructure Registry (OCIR) username"
-        description: "Oracle Cloud Infrastructure Registry (OCIR) username" 
-
-      ocir_user_password:
-        type: string
-        required: true
-        visibile: true
-        title: "Oracle Cloud Infrastructure Registry (OCIR) user authtoken"
-        description: "Oracle Cloud Infrastructure Registry (OCIR) user authtoken" 
-        
+      

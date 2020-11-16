@@ -45,7 +45,7 @@
       - ATP_database_display_name
       - ATP_database_license_model
       - ATP_tde_wallet_zip_file
-      - ATP_private_endpoint_label
+      - ATP_database_atp_private_endpoint_label
       - ATP_database_freeform_tags
       - ATP_database_defined_tags_value
     
@@ -157,5 +157,11 @@
         required: false
         default: "VCN"
         description: "Name for your VCN where want to create the solution resources."  
+
+      httpx_ports:
+        type: string
+        required: false
+        default: "['80','443']"
+        description: "HTTP and HTTPS ports."
 
       

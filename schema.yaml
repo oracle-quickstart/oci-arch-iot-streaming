@@ -164,4 +164,15 @@
         default: "['80','443']"
         description: "HTTP and HTTPS ports."
 
+      Shape:
+        type: string
+        required: false
+        default: "VM.Standard.E2.1"
+        description: "Shape of the VM used for Flask-based Webserver VM."
+
+      OsImage:
+        type: string
+        required: false
+        default: "Oracle-Linux-7.8-2020.05.26-0"
+        description: "OEL image used for Flask-based Webserver VM."
       

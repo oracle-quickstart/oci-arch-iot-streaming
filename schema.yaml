@@ -22,6 +22,7 @@
       - atp_admin_password
       - atp_user
       - atp_password
+      - ocir_namespace
     
     variables:
 
@@ -68,6 +69,13 @@
         visibile: true
         title: "ATP App User Database password"
         description: "ATP Database password for Application user"
+
+      ocir_namespace:
+        type: string
+        required: true
+        visibile: true
+        title: "Oracle Cloud Infrastructure Registry (OCIR) namespace"
+        description: "Oracle Cloud Infrastructure Registry (OCIR) namespace"
 
 
       

@@ -27,6 +27,27 @@
       - ocir_docker_repository
       - ocir_user_name
       - ocir_user_password
+
+    - title: Optional Configuration
+      visible: true
+      variables:      
+      - VCN-CIDR
+      - ATPsubnet-CIDR
+      - websubnet-CIDR
+      - VCNname
+      - httpx_ports
+      - Shape
+      - OsImage
+      - ATP_database_cpu_core_count
+      - ATP_database_data_storage_size_in_tbs
+      - ATP_database_db_name
+      - ATP_database_db_version
+      - ATP_database_display_name
+      - ATP_database_license_model
+      - ATP_tde_wallet_zip_file
+      - ATP_private_endpoint_label
+      - ATP_database_freeform_tags
+      - ATP_database_defined_tags_value
     
     variables:
 
@@ -109,5 +130,12 @@
         title: "OCIR user password"
         description: "Oracle Cloud Infrastructure Registry user password (your OCI user authtoken)" 
 
+      # Optional Configuration
+      VCN-CIDR:
+         type: string
+         required: false
+         default: "10.0.0.0/16"
+         pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+         description: "VCN CIDR block where you want to create the solution resources."
 
       

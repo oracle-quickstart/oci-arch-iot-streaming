@@ -25,6 +25,7 @@
       - ocir_namespace
       - ocir_repo_name
       - ocir_docker_repository
+      - ocir_user_name
     
     variables:
 
@@ -77,21 +78,28 @@
         required: true
         visibile: true
         title: "Oracle Cloud Infrastructure Registry (OCIR) namespace"
-        description: "Oracle Cloud Infrastructure Registry (OCIR) namespace"
+        description: "Oracle Cloud Infrastructure Registry namespace (can be the same as your tenancy name)"
 
       ocir_repo_name:
         type: string
         required: true
         visibile: true
         title: "Oracle Cloud Infrastructure Registry (OCIR) repository name"
-        description: "Oracle Cloud Infrastructure Registry (OCIR) repository name"
+        description: "Oracle Cloud Infrastructure Registry repository name (for example functions)"
 
       ocir_docker_repository:
         type: string
         required: true
         visibile: true
         title: "Oracle Cloud Infrastructure Registry (OCIR) Docker Repository URL"
-        description: "Oracle Cloud Infrastructure Registry (OCIR) Docker Repository URL" 
-        
+        description: "Oracle Cloud Infrastructure Registry Docker Repository URL (for example iad.ocir.io)" 
+
+      ocir_user_name:
+        type: string
+        required: true
+        visibile: true
+        title: "Oracle Cloud Infrastructure Registry (OCIR) username"
+        description: "Oracle Cloud Infrastructure Registry username (your OCI username)" 
+
 
       

@@ -41,7 +41,8 @@ variable "VCNname" {
 }
 
 variable "httpx_ports" {
-  default = ["80", "443"]
+  type = list(string)
+  default = ["80","443"]
 }
 
 variable "Shapes" {

@@ -5,7 +5,7 @@ resource "oci_core_instance" "webserver" {
   availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[0], "name")
   compartment_id      = var.compartment_ocid
   display_name        = "webserver"
-  shape               = var.Shapes[0]
+  shape               = var.Shape
   source_details {
     source_type = "image"
     source_id   = lookup(data.oci_core_images.OSImageLocal.images[0], "id")

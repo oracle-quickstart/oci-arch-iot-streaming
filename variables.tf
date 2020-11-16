@@ -45,9 +45,8 @@ variable "httpx_ports" {
   default = ["80","443"]
 }
 
-variable "Shapes" {
- type = list(string)
- default = ["VM.Standard2.1"]
+variable "Shape" {
+ default = "VM.Standard2.1"
 }
 
 variable "ATP_database_cpu_core_count" {

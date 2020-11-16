@@ -9,7 +9,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = file(var.private_key_oci)
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -36,7 +36,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = file(var.private_key_oci)
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -45,12 +45,24 @@ resource "null_resource" "webserver_ConfigMgmt" {
     destination = "/tmp/sqlnet.ora"
   }
 
+  provisioner "local-exec" {
+    command = "echo '${data.oci_database_autonomous_database_wallet.ATP_database_wallet.content}' >> ${var.ATP_tde_wallet_zip_file}_encoded"
+  }
+
+  provisioner "local-exec" {
+    command = "base64 --decode ${var.ATP_tde_wallet_zip_file}_encoded > ${var.ATP_tde_wallet_zip_file}"
+  }
+
+  provisioner "local-exec" {
+    command = "rm -rf ${var.ATP_tde_wallet_zip_file}_encoded"
+  }
+
   provisioner "file" {
     connection {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = file(var.private_key_oci)
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -64,7 +76,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = file(var.private_key_oci)
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -78,7 +90,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = file(var.private_key_oci)
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -92,7 +104,7 @@ resource "null_resource" "webserver_ConfigMgmt" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = file(var.private_key_oci)
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"
@@ -114,7 +126,7 @@ resource "null_resource" "webserver_Flask_WebServer_and_access_ATP" {
       type        = "ssh"
       user        = "opc"
       host        = data.oci_core_vnic.webserver_VNIC1.public_ip_address
-      private_key = file(var.private_key_oci)
+      private_key = tls_private_key.public_private_key_pair.private_key_pem
       script_path = "/home/opc/myssh.sh"
       agent       = false
       timeout     = "10m"

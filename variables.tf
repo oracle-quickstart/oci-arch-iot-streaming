@@ -2,15 +2,15 @@
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 variable "tenancy_ocid" {}
-variable "user_ocid" {}
-variable "fingerprint" {}
-variable "private_key_path" {}
+#variable "user_ocid" {}
+#variable "fingerprint" {}
+#variable "private_key_path" {}
 variable "compartment_ocid" {}
 variable "region" {}
 variable "atp_password" {}
 variable "atp_admin_password" {}
-variable "private_key_oci" {}
-variable "public_key_oci" {}
+#variable "private_key_oci" {}
+#variable "public_key_oci" {}
 
 variable "OsImage" {
   default = "Oracle-Linux-7.8-2020.05.26-0"

@@ -12,7 +12,7 @@ data "oci_database_autonomous_database_wallet" "ATP_database_wallet" {
   base64_encode_content  = "true"
 }
 
-resource "local_file" "ATP_database_wallet_file" {
-  content_base64  = data.oci_database_autonomous_database_wallet.ATP_database_wallet.content
-  filename = var.ATP_tde_wallet_zip_file
-}
+#resource "local_file" "ATP_database_wallet_file" {
+#  content_base64  = data.oci_database_autonomous_database_wallet.ATP_database_wallet.content
+#  filename = var.ATP_tde_wallet_zip_file
+#}

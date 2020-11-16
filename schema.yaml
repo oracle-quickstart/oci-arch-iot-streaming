@@ -20,34 +20,6 @@
       - region
       - atp_admin_user
       - atp_admin_password
-      - atp_user
-      - atp_password
-      - ocir_namespace
-      - ocir_repo_name
-      - ocir_docker_repository
-      - ocir_user_name
-      - ocir_user_password
-
-    - title: Optional Configuration
-      visible: true
-      variables:      
-      - VCN-CIDR
-      - ATPsubnet-CIDR
-      - websubnet-CIDR
-      - VCNname
-      - httpx_ports
-      - Shape
-      - OsImage
-      - ATP_database_cpu_core_count
-      - ATP_database_data_storage_size_in_tbs
-      - ATP_database_db_name
-      - ATP_database_db_version
-      - ATP_database_display_name
-      - ATP_database_license_model
-      - ATP_tde_wallet_zip_file
-      - ATP_private_endpoint_label
-      - ATP_database_freeform_tags
-      - ATP_database_defined_tags_value
     
     variables:
 
@@ -70,6 +42,7 @@
         required: true
         visibile: true
         default: "admin"
+        title: "ATP admin username."
         description: "ATP admin username."
 
       atp_admin_password:

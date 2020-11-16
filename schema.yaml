@@ -23,6 +23,7 @@
       - atp_user
       - atp_password
       - ocir_namespace
+      - ocir_repo_name
     
     variables:
 
@@ -76,6 +77,14 @@
         visibile: true
         title: "Oracle Cloud Infrastructure Registry (OCIR) namespace"
         description: "Oracle Cloud Infrastructure Registry (OCIR) namespace"
+
+      ocir_repo_name:
+        type: string
+        required: true
+        visibile: true
+        title: "Oracle Cloud Infrastructure Registry (OCIR) repository name"
+        description: "Oracle Cloud Infrastructure Registry (OCIR) repository name"
+
 
 
       

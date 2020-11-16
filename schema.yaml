@@ -233,4 +233,11 @@
         type: string
         required: false
         description: "ATP Database Defined Tags"
+
+    outputs:
+      generated_ssh_private_key:
+        title: "Generated SSH Private Key"
+        displayText: "Generated SSH Private Key"
+        type: string
+        visible: true
       

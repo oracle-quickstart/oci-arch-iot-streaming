@@ -2,7 +2,7 @@
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 resource "null_resource" "Login2OCIR" {
-  depends_on = [local_file.ATP_database_wallet_file, 
+  depends_on = [null_resource.webserver_ConfigMgmt,
                 oci_functions_application.Stream2ATPFnApp, 
                 oci_database_autonomous_database.ATPdatabase,
                 oci_identity_policy.FunctionsServiceReposAccessPolicy,
@@ -20,7 +20,7 @@ resource "null_resource" "Login2OCIR" {
 }
 
 resource "null_resource" "SetupATPFnPush2OCIR" {
-  depends_on = [null_resource.Login2OCIR, local_file.ATP_database_wallet_file, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase]
+  depends_on = [null_resource.Login2OCIR, null_resource.webserver_ConfigMgmt, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase]
 
   provisioner "local-exec" {
     command = "cp ${var.ATP_tde_wallet_zip_file} functions/SetupATPFn/" 
@@ -50,7 +50,7 @@ resource "null_resource" "SetupATPFnPush2OCIR" {
 
 
 resource "null_resource" "Stream2ATPFnPush2OCIR" {
-  depends_on = [null_resource.Login2OCIR, local_file.ATP_database_wallet_file, oci_streaming_stream.stream, oci_streaming_stream_pool.streamPool, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase, null_resource.SetupATPFnPush2OCIR]
+  depends_on = [null_resource.Login2OCIR, null_resource.webserver_ConfigMgmt, oci_streaming_stream.stream, oci_streaming_stream_pool.streamPool, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase, null_resource.SetupATPFnPush2OCIR]
 
 
   provisioner "local-exec" {

@@ -9,8 +9,8 @@ variable "compartment_ocid" {}
 variable "region" {}
 variable "atp_password" {}
 variable "atp_admin_password" {}
-variable "private_key_oci" {}
-variable "public_key_oci" {}
+#variable "private_key_oci" {}
+#variable "public_key_oci" {}
 
 variable "OsImage" {
   default = "Oracle-Linux-7.8-2020.05.26-0"
@@ -41,11 +41,12 @@ variable "VCNname" {
 }
 
 variable "httpx_ports" {
-  default = ["80", "443"]
+  type = list(string)
+  default = ["80","443"]
 }
 
-variable "Shapes" {
- default = ["VM.Standard2.1"]
+variable "Shape" {
+ default = "VM.Standard2.1"
 }
 
 variable "ATP_database_cpu_core_count" {

@@ -79,6 +79,9 @@
         visibile: true
         title: "ATP Admin Database password"
         description: "ATP Database password for ADMIN user"
+        minLength: 12
+        maxLength: 30
+        pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$ 
 
       atp_user:
         type: string
@@ -94,6 +97,9 @@
         visibile: true
         title: "ATP App User Database password"
         description: "ATP Database password for Application user"
+        minLength: 12
+        maxLength: 30
+        pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$ 
 
       ocir_namespace:
         type: string
@@ -165,10 +171,12 @@
         description: "HTTP and HTTPS ports."
 
       Shape:
-        type: string
+        type: oci:core:instanceshape:name
         required: false
         default: "VM.Standard.E2.1"
         description: "Shape of the VM used for Flask-based Webserver VM."
+        dependsOn:
+          compartmentId: ${compartment_ocid}
 
       OsImage:
         type: string
@@ -179,12 +187,18 @@
       ATP_database_cpu_core_count:
         type: number
         required: false
+        minimum: 1
+        maximum: 128
+        multipleOf: 1
         default: 1
         description: "ATP Database CPU Core Count"
 
       ATP_database_data_storage_size_in_tbs:
         type: number
         required: false
+        minimum: 1
+        maximum: 128
+        multipleOf: 1
         default: 1
         description: "ATP Database Data Storage Size in terabytes"
 
@@ -195,10 +209,12 @@
         description: "ATP Database DBNAME"
 
       ATP_database_db_version:
-        type: string
+        type: enum
         required: false
         default: "19c"
         description: "ATP Database Version"
+        enum:
+          - "19c"
 
       ATP_database_display_name:
         type: string
@@ -207,10 +223,13 @@
         description: "ATP Database Display Name"
 
       ATP_database_license_model:
-        type: string
+        type: enum
         required: false
         default: "LICENSE_INCLUDED"
         description: "ATP Database License Model"
+        enum:
+          - "LICENSE_INCLUDED"
+          - "BRING_YOUR_OWN_LICENSE"
 
       ATP_tde_wallet_zip_file:
         type: string
@@ -235,6 +254,7 @@
         description: "ATP Database Defined Tags"
 
     outputs:
+      
       generated_ssh_private_key:
         title: "Generated SSH Private Key"
         displayText: "Generated SSH Private Key"

@@ -9,8 +9,6 @@ variable "compartment_ocid" {}
 variable "region" {}
 variable "atp_password" {}
 variable "atp_admin_password" {}
-#variable "private_key_oci" {}
-#variable "public_key_oci" {}
 
 variable "OsImage" {
   default = "Oracle-Linux-7.8-2020.05.26-0"
@@ -58,15 +56,15 @@ variable "ATP_database_data_storage_size_in_tbs" {
 }
 
 variable "ATP_database_db_name" {
-  default = "fkatpdb5"
+  default = "fkatpdb"
 }
 
 variable "ATP_database_db_version" {
-  default = "18c"
+  default = "19c"
 }
 
 variable "ATP_database_defined_tags_value" {
-  default = "value"
+  default = ""
 }
 
 variable "ATP_database_display_name" {

@@ -12,12 +12,12 @@
       visible: false
       variables:
       - tenancy_ocid
+      - region
 
     - title: Required Configuration
       visible: true  
       variables:
       - compartment_ocid
-      - region
       - atp_admin_user
       - atp_admin_password
       - atp_user

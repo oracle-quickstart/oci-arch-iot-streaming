@@ -2,8 +2,7 @@
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 resource "null_resource" "Login2OCIR" {
-  depends_on = [null_resource.webserver_ConfigMgmt,
-                oci_functions_application.Stream2ATPFnApp, 
+  depends_on = [oci_functions_application.Stream2ATPFnApp, 
                 oci_database_autonomous_database.ATPdatabase,
                 oci_identity_policy.FunctionsServiceReposAccessPolicy,
                 oci_identity_policy.FunctionsServiceNetworkAccessPolicy,
@@ -15,15 +14,25 @@ resource "null_resource" "Login2OCIR" {
                 oci_identity_policy.AnyUserUseFnPolicy]
 
   provisioner "local-exec" {
-    command = "echo '${var.ocir_user_password}' |  docker login ${var.ocir_docker_repository} --username ${var.ocir_namespace}/${var.ocir_user_name} --password-stdin"
+    command = "echo '${var.ocir_user_password}' |  docker login ${local.ocir_docker_repository} --username ${local.ocir_namespace}/${var.ocir_user_name} --password-stdin"
   }
 }
 
 resource "null_resource" "SetupATPFnPush2OCIR" {
-  depends_on = [null_resource.Login2OCIR, null_resource.webserver_ConfigMgmt, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase]
+  depends_on = [null_resource.Login2OCIR, 
+                oci_functions_application.Stream2ATPFnApp, 
+                oci_database_autonomous_database.ATPdatabase]
 
   provisioner "local-exec" {
-    command = "cp ${var.ATP_tde_wallet_zip_file} functions/SetupATPFn/" 
+    command = "echo '${oci_database_autonomous_database_wallet.ATP_database_wallet.content}' >> functions/SetupATPFn/${var.ATP_tde_wallet_zip_file}_encoded"
+  }
+
+  provisioner "local-exec" {
+    command = "base64 --decode functions/SetupATPFn/${var.ATP_tde_wallet_zip_file}_encoded > functions/SetupATPFn/${var.ATP_tde_wallet_zip_file}"
+  }
+
+  provisioner "local-exec" {
+    command = "rm -rf functions/SetupATPFn/${var.ATP_tde_wallet_zip_file}_encoded"
   }
 
   provisioner "local-exec" {
@@ -37,24 +46,40 @@ resource "null_resource" "SetupATPFnPush2OCIR" {
   }
 
   provisioner "local-exec" {
-    command = "image=$(docker images | grep setupatpfn | awk -F ' ' '{print $3}') ; docker tag $image ${var.ocir_docker_repository}/${var.ocir_namespace}/${var.ocir_repo_name}/setupatpfn:0.0.1"
+    command = "image=$(docker images | grep setupatpfn | awk -F ' ' '{print $3}') ; docker tag $image ${local.ocir_docker_repository}/${local.ocir_namespace}/${var.ocir_repo_name}/setupatpfn:0.0.1"
     working_dir = "functions/SetupATPFn"
   }
 
   provisioner "local-exec" {
-    command = "docker push ${var.ocir_docker_repository}/${var.ocir_namespace}/${var.ocir_repo_name}/setupatpfn:0.0.1"
+    command = "docker push ${local.ocir_docker_repository}/${local.ocir_namespace}/${var.ocir_repo_name}/setupatpfn:0.0.1"
     working_dir = "functions/SetupATPFn"
   }
 
+  provisioner "local-exec" {
+    command = "rm -rf functions/SetupATPFn/${var.ATP_tde_wallet_zip_file}"
+  }
 }
 
 
 resource "null_resource" "Stream2ATPFnPush2OCIR" {
-  depends_on = [null_resource.Login2OCIR, null_resource.webserver_ConfigMgmt, oci_streaming_stream.stream, oci_streaming_stream_pool.streamPool, oci_functions_application.Stream2ATPFnApp, oci_database_autonomous_database.ATPdatabase, null_resource.SetupATPFnPush2OCIR]
-
+  depends_on = [null_resource.Login2OCIR, 
+               oci_streaming_stream.stream, 
+               oci_streaming_stream_pool.streamPool, 
+               oci_functions_application.Stream2ATPFnApp, 
+               oci_database_autonomous_database.ATPdatabase, 
+#               null_resource.ATP_download_and_decode,
+               null_resource.SetupATPFnPush2OCIR]
 
   provisioner "local-exec" {
-    command = "cp ${var.ATP_tde_wallet_zip_file} functions/Stream2ATPFn/" 
+    command = "echo '${oci_database_autonomous_database_wallet.ATP_database_wallet.content}' >> functions/Stream2ATPFn/${var.ATP_tde_wallet_zip_file}_encoded"
+  }
+
+  provisioner "local-exec" {
+    command = "base64 --decode functions/Stream2ATPFn/${var.ATP_tde_wallet_zip_file}_encoded > functions/Stream2ATPFn/${var.ATP_tde_wallet_zip_file}"
+  }
+
+  provisioner "local-exec" {
+    command = "rm -rf functions/Stream2ATPFn/${var.ATP_tde_wallet_zip_file}_encoded"
   }
 
   provisioner "local-exec" {
@@ -68,20 +93,26 @@ resource "null_resource" "Stream2ATPFnPush2OCIR" {
   }
 
   provisioner "local-exec" {
-    command = "image=$(docker images | grep stream2atpfn | awk -F ' ' '{print $3}') ; docker tag $image ${var.ocir_docker_repository}/${var.ocir_namespace}/${var.ocir_repo_name}/stream2atpfn:0.0.1"
+    command = "image=$(docker images | grep stream2atpfn | awk -F ' ' '{print $3}') ; docker tag $image ${local.ocir_docker_repository}/${local.ocir_namespace}/${var.ocir_repo_name}/stream2atpfn:0.0.1"
     working_dir = "functions/Stream2ATPFn"
   }
 
   provisioner "local-exec" {
-    command = "docker push ${var.ocir_docker_repository}/${var.ocir_namespace}/${var.ocir_repo_name}/stream2atpfn:0.0.1"
+    command = "docker push ${local.ocir_docker_repository}/${local.ocir_namespace}/${var.ocir_repo_name}/stream2atpfn:0.0.1"
     working_dir = "functions/Stream2ATPFn"
   }
 
+  provisioner "local-exec" {
+    command = "rm -rf functions/Stream2ATPFn/${var.ATP_tde_wallet_zip_file}"
+  }
 }
 
 
 resource "null_resource" "Upload2StreamFnPush2OCIR" {
-  depends_on = [null_resource.Login2OCIR, oci_streaming_stream.stream, oci_streaming_stream_pool.streamPool, oci_functions_application.Upload2StreamFnApp]
+  depends_on = [null_resource.Login2OCIR, 
+                oci_streaming_stream.stream, 
+                oci_streaming_stream_pool.streamPool, 
+                oci_functions_application.Upload2StreamFnApp]
 
   provisioner "local-exec" {
     command = "image=$(docker images | grep upload2streamfn | awk -F ' ' '{print $3}') ; docker rmi -f $image &> /dev/null ; echo $image"
@@ -104,12 +135,12 @@ resource "null_resource" "Upload2StreamFnPush2OCIR" {
   }
 
   provisioner "local-exec" {
-    command = "image=$(docker images | grep upload2streamfn | awk -F ' ' '{print $3}') ; docker tag $image ${var.ocir_docker_repository}/${var.ocir_namespace}/${var.ocir_repo_name}/upload2streamfn:0.0.1"
+    command = "image=$(docker images | grep upload2streamfn | awk -F ' ' '{print $3}') ; docker tag $image ${local.ocir_docker_repository}/${local.ocir_namespace}/${var.ocir_repo_name}/upload2streamfn:0.0.1"
     working_dir = "functions/Upload2StreamFn"
   }
 
   provisioner "local-exec" {
-    command = "docker push ${var.ocir_docker_repository}/${var.ocir_namespace}/${var.ocir_repo_name}/upload2streamfn:0.0.1"
+    command = "docker push ${local.ocir_docker_repository}/${local.ocir_namespace}/${var.ocir_repo_name}/upload2streamfn:0.0.1"
     working_dir = "functions/Upload2StreamFn"
   }
 

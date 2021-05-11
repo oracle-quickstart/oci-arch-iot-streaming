@@ -5,18 +5,21 @@ resource "oci_core_network_security_group" "ATP_nsg" {
     compartment_id = var.compartment_ocid
     display_name   = "ATP_nsg"
     vcn_id         = oci_core_virtual_network.vcn.id
+    defined_tags   = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }  
 }
 
 resource "oci_core_network_security_group" "web_nsg" {
     compartment_id = var.compartment_ocid
     display_name   = "web_nsg"
     vcn_id         = oci_core_virtual_network.vcn.id
+    defined_tags   = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }  
 }
 
 resource "oci_core_network_security_group" "ssh_nsg" {
     compartment_id = var.compartment_ocid
     display_name   = "ssh_nsg"
     vcn_id         = oci_core_virtual_network.vcn.id
+    defined_tags   = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }  
 }
 
 resource "oci_core_network_security_group_security_rule" "ATP_nsg_eagress_rule1" {
@@ -24,7 +27,7 @@ resource "oci_core_network_security_group_security_rule" "ATP_nsg_eagress_rule1"
     direction = "EGRESS"
     protocol = "6"
     destination = var.VCN-CIDR
-    destination_type = "CIDR_BLOCK"
+    destination_type = "CIDR_BLOCK" 
 }
 
 resource "oci_core_network_security_group_security_rule" "ATP_nsg_ingress_rule1" {

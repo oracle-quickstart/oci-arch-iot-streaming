@@ -2,10 +2,6 @@
 
 Deploy Oracle Cloud Infrastructure Streaming to support IoT devices data streams uploaded into the cloud at scale.
 
-This reference architecture deploys OCI Streaming supported by OCI Functions and OCI API Gateway. Messages uploaded to the stream partition will be then consumed by the Functions and uploaded to OCI ATP Instance. Data from the database will be exposed via Flask-based webserver deployed on OCI compute instance.  
-
-For details of the architecture, see [_Stream IoT data to an autonomous database using serverless functions_](https://docs.oracle.com/en/solutions/iot-streaming-oci)
-
 ## Prerequisites
 
 - Permission to `manage` the following types of resources in your Oracle Cloud Infrastructure tenancy: `vcns`, `internet-gateways`, `route-tables`, `network-security-groups`, `subnets`, `stream`, `stream-pull`, `stream-push`, `functions-family`, `autonomous-database-family`, and `instances`.
@@ -16,7 +12,7 @@ If you don't have the required permissions and quota, contact your tenancy admin
 
 ## Deploy Using Oracle Resource Manager
 
-1. Click [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://console.us-phoenix-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-arch-iot-streaming/raw/master/resource-manager/oci-arch-iot-streaming.zip)
+1. Click [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://console.us-phoenix-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-arch-iot-streaming/releases/latest/download/oci-arch-iot-streaming-stack-latest.zip)
 
     If you aren't already signed in, when prompted, enter the tenancy and user credentials.
 
@@ -74,25 +70,21 @@ user_ocid            = "<user_ocid>"
 fingerprint          = "<finger_print>"
 private_key_path     = "<pem_private_key_path>"
 
-# SSH Keys
-public_key_oci  = "<public_ssh_key_path>"
-private_key_oci  = "<private_ssh_key_path>"
-
 # Region
 region = "<oci_region>"
 
 # Compartment
 compartment_ocid = "<compartment_ocid>"
 
+# Availablity Domain 
+availablity_domain_name = "availablity_domain_name" # for example "GrCH:US-ASHBURN-AD-1"
+
 # ATP passwords
 atp_admin_password = "<ATP_admin_password>"
 atp_password = "<ATP_appuser_password>"
 
 # OCIR for functions
-ocir_repo_name         = "functions"
 ocir_user_name         = "<oci_user_name>"
-ocir_namespace         = "<ocir_namespace>"
-ocir_docker_repository = "<oci_region>.ocir.io"
 ocir_user_password     = "<oci_user_auth_token>"
 
 ````
@@ -112,3 +104,8 @@ When you no longer need the deployment, you can run this command to destroy it:
 
 ![](./images/oci-arch-iot-streaming.png)
 
+## Reference Archirecture
+
+This reference architecture deploys OCI Streaming supported by OCI Functions and OCI API Gateway. Messages uploaded to the stream partition will be then consumed by the Functions and uploaded to OCI ATP Instance. Data from the database will be exposed via Flask-based webserver deployed on OCI compute instance.  
+
+For details of the architecture, see [_Stream IoT data to an autonomous database using serverless functions_](https://docs.oracle.com/en/solutions/iot-streaming-oci)

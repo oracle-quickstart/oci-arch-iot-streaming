@@ -2,10 +2,15 @@
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 resource "oci_apigateway_gateway" "apigateway" {
+  depends_on = [oci_identity_policy.ManageAPIGWFamilyPolicy,
+                oci_identity_policy.ManageVCNFamilyPolicy,
+                oci_identity_policy.UseFnFamilyPolicy,
+                oci_identity_policy.AnyUserUseFnPolicy]
   compartment_id = var.compartment_ocid
   endpoint_type  = "PUBLIC"
   subnet_id      = oci_core_subnet.websubnet.id
   display_name   = "apigateway"
+  defined_tags   = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }  
 }
 
 
@@ -33,8 +38,7 @@ resource "oci_apigateway_deployment" "apigateway_deployment" {
       methods = ["GET"]
       path    = "/stream2atp"
     }
-
-
   }
+  defined_tags   = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }  
 }
 

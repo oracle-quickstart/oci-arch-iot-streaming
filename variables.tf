@@ -9,9 +9,19 @@ variable "compartment_ocid" {}
 variable "region" {}
 variable "atp_password" {}
 variable "atp_admin_password" {}
+variable "availablity_domain_name" {}
 
-variable "OsImage" {
-  default = "Oracle-Linux-7.8-2020.05.26-0"
+variable "release" {
+  description = "Reference Architecture Release (OCI Architecture Center)"
+  default     = "1.0"
+}
+
+variable "oracle_instant_client_version" {
+  default     = "21.1"
+}
+
+variable "oracle_instant_client_version_short" {
+  default     = "21"
 }
 
 variable "atp_admin_user" {
@@ -19,7 +29,7 @@ variable "atp_admin_user" {
 }
 
 variable "atp_user" {
- default = "fkuser"
+ default = "iotuser"
 }
 
 variable "VCN-CIDR" {
@@ -44,7 +54,23 @@ variable "httpx_ports" {
 }
 
 variable "Shape" {
- default = "VM.Standard2.1"
+   default = "VM.Standard.E3.Flex"
+}
+
+variable "Shape_flex_ocpus" {
+    default = 1
+}
+
+variable "Shape_flex_memory" {
+    default = 10
+}
+
+variable "ssh_public_key" {
+  default = ""
+}
+
+variable "ATP_private_endpoint" {
+  default = true
 }
 
 variable "ATP_database_cpu_core_count" {
@@ -56,7 +82,7 @@ variable "ATP_database_data_storage_size_in_tbs" {
 }
 
 variable "ATP_database_db_name" {
-  default = "fkatpdb"
+  default = "iotpdb"
 }
 
 variable "ATP_database_db_version" {
@@ -89,17 +115,17 @@ variable "ATP_database_atp_private_endpoint_label" {
   default = "ATPPrivateEndpoint"
 }
 
-variable "ocir_namespace" {
-  default = ""
-}
+#variable "ocir_namespace" {
+#  default = ""
+#}
 
 variable "ocir_repo_name" {
-  default = ""
+  default = "iotfunctions"
 }
 
-variable "ocir_docker_repository" {
-  default = ""
-}
+#variable "ocir_docker_repository" {
+#  default = ""
+#}
 
 variable "ocir_user_name" {
   default = ""
@@ -108,3 +134,35 @@ variable "ocir_user_name" {
 variable "ocir_user_password" {
   default = ""
 }
+
+variable "instance_os" {
+  description = "Operating system for compute instances"
+  default     = "Oracle Linux"
+}
+
+variable "linux_os_version" {
+  description = "Operating system version for all Linux instances"
+  default     = "7.9"
+#  default     = "8"
+}
+
+# Dictionary Locals
+locals {
+  compute_flexible_shapes = [
+    "VM.Standard.E3.Flex",
+    "VM.Standard.E4.Flex"
+  ]
+}
+
+# Checks if is using Flexible Compute Shapes
+locals {
+  is_flexible_node_shape = contains(local.compute_flexible_shapes, var.Shape)
+}
+
+# OCIR repo name & namespace
+
+locals {
+  ocir_docker_repository = join("", [lower(lookup(data.oci_identity_regions.oci_regions.regions[0], "key" )), ".ocir.io"])
+  ocir_namespace = lookup(data.oci_identity_tenancy.oci_tenancy, "name" )
+}
+

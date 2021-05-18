@@ -10,7 +10,7 @@ resource "oci_identity_tag_namespace" "ArchitectureCenterTagNamespace" {
     compartment_id = var.compartment_ocid
     description = "ArchitectureCenterTagNamespace"
     name = "ArchitectureCenter\\iot-streaming-oci-${random_id.tag.hex}"
-  
+
     provisioner "local-exec" {
        command = "sleep 10"
     }

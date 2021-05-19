@@ -97,7 +97,7 @@ Deploy:
 
 ## How to verify the environment after deployment
 
-1. Use Postman or any other similar tool to populate Streaming with new message. It will be achieve by Upload2StreamFn function exposed via API Gateway (use Upload2StreamFn_POST_EndPoint_URL output):
+1. Use Postman or any other similar tool to populate Streaming with new message. It will be achieved by Upload2StreamFn function exposed via API Gateway (use Upload2StreamFn_POST_EndPoint_URL output):
 
 ![](./images/postman_push.png)
 
@@ -105,11 +105,11 @@ Deploy:
 
 ![](./images/stream_messages.png)
 
-3. Access Flask Webpage on the compute to check initial state of records for IoT table (use Flask_Webserver_URL output):
+3. Access Flask Webpage on the compute to check initial state of records for ATP's IoT table (use Flask_Webserver_URL output):
 
 ![](./images/flask_initial_webpage.png)
 
-4. Click on "Stream2ATPFn" button on Flask Webpage. It will invoke Stream2ATP function that will consume messages from Stream and will push it into ATP IoT table (for the first time you should wait 30-45 seconds as function need to be bootstrapped):
+4. Click on "Stream2ATPFn" button on Flask Webpage. It will invoke Stream2ATPFn function that will consume messages from Stream and will push it into ATP IoT table (for the first time you should wait 30-45 seconds as function need to be bootstrapped):
 
 ![](./images/stream2atp.png)
 

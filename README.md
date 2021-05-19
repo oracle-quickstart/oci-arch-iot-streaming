@@ -95,6 +95,29 @@ Deploy:
     terraform plan
     terraform apply
 
+## How to verify the environment after deployment
+
+1. Use Postman or any other similar tool to populate Streaming with new message. It will be achieve by Upload2StreamFn function exposed via API Gateway (use Upload2StreamFn_POST_EndPoint_URL output):
+
+![](./images/postman_push.png)
+
+2. Verify in OCI Console that Stream has been populated with new message:
+
+![](./images/stream_messages.png)
+
+3. Access Flask Webpage on the compute to check initial state of records for IoT table (use Flask_Webserver_URL output):
+
+![](./images/flask_initial_webpage.png)
+
+4. Click on "Stream2ATPFn" button on Flask Webpage. It will invoke Stream2ATP function that will consume messages from Stream and will push it into ATP IoT table (for the first time you should wait 30-45 seconds as function need to be bootstrapped):
+
+![](./images/stream2atp.png)
+
+5. Refresh the page and you should see new record visible from ATP perspective:
+
+![](./images/flask_updated_webpage.png)
+
+
 ## Destroy the Deployment
 When you no longer need the deployment, you can run this command to destroy it:
 
